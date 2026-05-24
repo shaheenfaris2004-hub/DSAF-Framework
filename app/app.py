@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -7,18 +7,13 @@ app.config["DEBUG"] = True
 def home():
     return "DSAF Test Application"
 
+
 @app.route("/search")
 def search():
-    q = request.args.get("q", "")
-    template = f"""
-    <html>
-        <body>
-            <h1>Search Result</h1>
-            <p>{q}</p>
-        </body>
-    </html>
-    """
-    return render_template_string(template)
+    query = request.args.get("q", "")
+    query = query[:100]
+    return render_template("search.html", query=query)
+
 
 @app.route("/health")
 def health():

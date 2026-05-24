@@ -1,19 +1,22 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: dsaf-admin
-
+  name: dsaf-app-sa
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: Role
 metadata:
-  name: dsaf-admin-binding
+  name: dsaf-app-minimal-role
+rules: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dsaf-app-minimal-binding
 subjects:
   - kind: ServiceAccount
-    name: dsaf-admin
-    namespace: default
+    name: dsaf-app-sa
 roleRef:
-  kind: ClusterRole
-  name: cluster-admin
+  kind: Role
+  name: dsaf-app-minimal-role
   apiGroup: rbac.authorization.k8s.io

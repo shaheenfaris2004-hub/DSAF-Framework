@@ -12,13 +12,29 @@ spec:
       labels:
         app: dsaf-app
     spec:
-      serviceAccountName: dsaf-admin
+      serviceAccountName: dsaf-app-sa
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: dsaf-app
-          image: dsaf-lab:v1
-          imagePullPolicy: IfNotPresent
+          image: dsaf-vulnerable-app:remediated
+          imagePullPolicy: Never
           ports:
             - containerPort: 5000
           securityContext:
-            runAsUser: 0
-            privileged: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

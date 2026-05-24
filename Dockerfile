@@ -1,14 +1,18 @@
-FROM python:3.9
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ /app/
-COPY .env /app/.env
+COPY app/ ./app/
+
+RUN chown -R appuser:appgroup /app
+
+USER appuser
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app.app:app"]
