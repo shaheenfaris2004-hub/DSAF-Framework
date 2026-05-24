@@ -1,0 +1,6 @@
+.env
+*.env
+config.local.py
+secrets/
+reports/
+*.token

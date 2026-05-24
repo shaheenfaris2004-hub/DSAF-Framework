@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsaf-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dsaf-app
+  template:
+    metadata:
+      labels:
+        app: dsaf-app
+    spec:
+      serviceAccountName: dsaf-admin
+      containers:
+        - name: dsaf-app
+          image: dsaf-lab:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          securityContext:
+            runAsUser: 0
+            privileged: true

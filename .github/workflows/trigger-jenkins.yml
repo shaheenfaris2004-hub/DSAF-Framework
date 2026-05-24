@@ -1,0 +1,24 @@
+name: Trigger Jenkins via Ngrok
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate random User-Agent
+        run: |
+          UA="ua-$RANDOM-$RANDOM"
+          echo "UA=$UA" >> $GITHUB_ENV
+
+      - name: Trigger Jenkins job
+        run: |
+          JENKINS_URL="https://scored-unengaged-creatable.ngrok-free.dev/generic-webhook-trigger/invoke?token=dsaf-project"
+
+          curl -X GET \
+            -A "$UA" \
+            "$JENKINS_URL"
